@@ -13,6 +13,8 @@ const connection = mysql.createConnection({
   database: 'bamazon_DB',
 });
 
+const choiceArray = [];
+
 function buyItem() {
   connection.query('SELECT * FROM products', function(err, results) {
     if (err) throw err;
@@ -22,7 +24,8 @@ function buyItem() {
     // }
     console.log('<----------------------------------->');
     for (let i = 0; i < results.length; i++) {
-      console.log(results[i].product_name);
+      console.log(`Item: ${results[i].item_id} ${results[i].product_name}`);
+      // console.log(results[i].stock_quantity);
     }
     console.log('<----------------------------------->');
     inquirer
@@ -32,10 +35,9 @@ function buyItem() {
           type: 'checkbox',
           choices:
             function() {
-              const choiceArray = [];
               for (let i = 0; i < results.length; i++) {
                 // console.log(res[0]);
-                choiceArray.push(`Item name: ${results[i].product_name}\n     Quantity Available: ${results[i].stock_quantity}`);
+                choiceArray.push(`Item: ${results[i].item_id} ${results[i].product_name}\n     Quantity Available: ${results[i].stock_quantity}`);
                 // console.log(choiceArray);
               }
               return choiceArray;
@@ -50,13 +52,22 @@ function buyItem() {
       ])
       .then(function(answer) {
         console.log(answer.quantity);
-
-        let chosenItem;
         for (let i = 0; i < results.length; i++) {
-          if (results[i].item_id === answer.choice) {
-            chosenItem = results[i];
-          }
+          console.log(results[i].stock_quantity);
         }
+
+        // let chosenItem;
+        // for (let i = 0; i < results.length; i++) {
+        //   if (results[i].item_id === answer.choice) {
+        //     chosenItem = results[i];
+        //     console.log(chosenItem.stock_quantity);
+        //   }
+        // }
+
+
+        // if (answer.quantity <= )
+
+
         // // determine if bid was high enough
         // if (chosenItem.stock_quantity < parseInt(answer.bid)) {
         //   // bid was high enough, so update db, let the user know, and start over
