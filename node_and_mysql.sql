@@ -32,3 +32,5 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Four Wheeler', 'Vehicle', 2500, 3);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Van', 'Vehicle', 25000, 8);
+
+SELECT * FROM bamazon_db.products;
