@@ -1,6 +1,10 @@
+// These items are required in order to make the program work
+
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 require('console.table');
+
+// Connects you to the database.
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -14,6 +18,9 @@ const connection = mysql.createConnection({
   database: 'bamazon_DB',
 });
 
+// Function that leads you through "buying" items from the
+// list of items within the database
+
 function itemInquiry() {
   inquirer
     .prompt([
@@ -22,8 +29,10 @@ function itemInquiry() {
         type: 'input',
         name: 'id',
         message: 'Which item would you like to purchase?\n',
+        // makes sure that the input given in the answer is
+        // actually a number.
         validate: function(value) {
-          if (!isNaN(value) && value < 11) {
+          if (!isNaN(value)) {
             return true;
           }
           return false;
@@ -33,6 +42,8 @@ function itemInquiry() {
         type: 'input',
         name: 'quantity',
         message: 'How many of these items would you like to buy? \n',
+        // makes sure that the input given in the answer is
+        // actually a number.
         validate: function(value) {
           if (!isNaN(value)) {
             return true;
@@ -41,13 +52,20 @@ function itemInquiry() {
         },
       },
 
+      // runs through the answer portion of the inquiry
     ]).then(function(answer) {
       // console.log(answer);
+      // accesses the information within the database
       connection.query('SELECT * FROM products WHERE ?', [{ item_id: answer.id }], function(err, res) {
         if (err) throw err;
+        // gives the inventory quantity of items in database.
         const currentQuantity = res[0].stock_quantity;
+        // gives the price of items in database
         const itemPrice = res[0].price;
+        // gives total customer price
         const customerPrice = itemPrice * answer.quantity;
+        // gives new stock_quantity for items in the database
+        // after a 'purchase' was made.
         const remainingQuantity = currentQuantity - answer.quantity;
         if (currentQuantity > answer.quantity) {
           console.log(`\nYour total purchase price is $${customerPrice}.00.`);
@@ -67,6 +85,8 @@ function itemInquiry() {
       });
     });
 }
+
+// function that creates a table of all the items in database.
 
 function createTable() {
   connection.connect(function() {

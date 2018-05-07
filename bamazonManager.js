@@ -1,7 +1,10 @@
+// These items are required in order to make the program work
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 require('console.table');
 require('events').EventEmitter.prototype._maxListeners = 100;
+
+// Connects you to the database.
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -15,12 +18,20 @@ const connection = mysql.createConnection({
   database: 'bamazon_DB',
 });
 
+// function that quits out of the program. Could be used
+// more if I am able to put all of the pieces together
+// without exiting out after each portion is run
+
 function quitApplication() {
   console.log('    Have a nice day!');
   console.log('\n<----------------------->\n');
 
   connection.end();
 }
+
+// function that initiates the overall program on this page
+// to run. Asks what the user would like to do. From here
+// it breaks into the various functions to tell it what to do.
 
 function itemInquiry() {
   inquirer
@@ -49,6 +60,8 @@ function itemInquiry() {
       },
     ]).then(function(answer) {
     //   console.log(answer.managerOptions[0]);
+      // switch that allows you to choose various actions
+      // to be committed on user's choice
       switch (answer.managerOptions[0]) {
         case 'Products for Sale':
           forSale();
@@ -74,7 +87,12 @@ function itemInquiry() {
     });
 }
 
+// starts the program running
+
 itemInquiry();
+
+// function that shows the total stock quantity of the items
+// within the database.
 
 function forSale() {
   connection.connect(function() {
@@ -90,6 +108,8 @@ function forSale() {
     });
   });
 }
+
+// shows any item that has less than 5 pieces on the shelf
 
 function lowInv() {
   connection.connect(function() {
@@ -114,6 +134,9 @@ function lowInv() {
     });
   });
 }
+
+// function to add quanity to the stock on the shelf
+// (Existing items only)
 
 function addInv() {
 //   console.log('add inventory app');
@@ -175,6 +198,9 @@ function addInv() {
       });
     });
 }
+
+// add new products to the inventory and to the database
+// (for now)
 
 function addNewProduct() {
 //   console.log('add new product app');
