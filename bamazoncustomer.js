@@ -67,12 +67,16 @@ function itemInquiry() {
         // gives new stock_quantity for items in the database
         // after a 'purchase' was made.
         const remainingQuantity = currentQuantity - answer.quantity;
+        // calculates the total $ of product sold of each item
+        const productSales = res[0].product_sales + customerPrice;
+
         if (currentQuantity > answer.quantity) {
           console.log(`\nYour total purchase price is $${customerPrice}.00.`);
           console.log('\n<------------------------->\n');
           console.log('Thanks for your business!');
           console.log('\n<------------------------->\n');
           connection.query('UPDATE products SET stock_quantity=? WHERE item_id=?', [remainingQuantity, answer.id]);
+          connection.query('UPDATE products SET product_sales=? WHERE item_id=?', [productSales, answer.id]);
           connection.query('SELECT * FROM products', function(error, results) {
             console.log('Inventory available for next purchase:\n');
             console.table(results);
