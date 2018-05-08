@@ -103,8 +103,8 @@ function forSale() {
       console.log('These are the items currently for sale \n');
       console.table(results);
       console.log('\n<----------------------->\n');
-      // itemInquiry();
-      quitApplication();
+      itemInquiry();
+      // quitApplication();
     });
   });
 }
@@ -122,14 +122,14 @@ function lowInv() {
         //   console.log(results[i].stock_quantity);
           if (results[i].stock_quantity <= 5) {
             lowInventoryArray.push(results[i]);
-            // itemInquiry();
           }
         }
         console.log('\n');
         console.table(lowInventoryArray);
         console.log('\n');
         console.log('\n<----------------------->\n');
-        quitApplication();
+        // quitApplication();
+        itemInquiry();
       }
     });
   });
@@ -193,7 +193,8 @@ function addInv() {
           //   itemInquiry();
           console.log('\n<----------------------->\n');
           console.log('Inventory has been updated\n');
-          quitApplication();
+          // quitApplication();
+          itemInquiry();
         });
       });
     });
@@ -232,7 +233,8 @@ function addNewProduct() {
         if (err) throw err;
         console.log('\n<----------------------->\n');
         console.log('Item added');
-        quitApplication();
+        // quitApplication();
+        itemInquiry();
       });
     });
   });
